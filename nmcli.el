@@ -1,0 +1,21 @@
+;; Package-Requires: ((dash "2.16.0"))
+
+(setq nmcli-dev-wifi (shell-command-to-string "nmcli dev wifi"))
+
+(let ((output (mapcar (lambda (x)
+                        (split-string x "  " t " "))
+                      (split-string nmcli-dev-wifi "\n" t))))
+  (let ((columns (vconcat []
+                          (mapcar (lambda (x)
+                                    (list x 10))
+                                  (car output))))
+        (rows (mapcar (lambda (x)
+                        `(nil ,(vconcat [] x)))
+                      (mapcar (lambda (x)
+                                (if (string= "*" (car x)) x (cons "" x)))
+                              (cdr output)))))
+    (switch-to-buffer "*temp*")
+    (setq tabulated-list-format columns)
+    (setq tabulated-list-entries rows)
+    (tabulated-list-init-header)
+    (tabulated-list-print)))
