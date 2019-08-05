@@ -38,6 +38,17 @@
   (switch-to-buffer "*nmcli-wifi*")
   (nmcli-wifi-mode))
 
+(defun nmcli-wifi-connect ()
+  (interactive)
+  (let ((ssid (aref (tabulated-list-get-entry) 1))
+        (passwordRequired (not (string= "--" (aref (tabulated-list-get-entry) 7)))))
+    (if (not passwordRequired)
+        (shell-command (format "nmcli dev wifi connect \"%s\"" ssid))
+      (let ((password (read-passwd "Password: ")))
+        (progn (shell-command (format "nmcli dev wifi connect \"%s\" password %s" ssid password))
+               (clear-string password))))))
+
 (define-key nmcli-wifi-mode-map (kbd "g") 'nmcli-wifi-refresh)
+(define-key nmcli-wifi-mode-map (kbd "c") 'nmcli-wifi-connect)
 
 (provide 'nmcli-wifi)
