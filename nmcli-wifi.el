@@ -15,6 +15,7 @@
     (tabulated-list-init-header)
     (tabulated-list-print)))
 
+;; TODO: Try to rescan first
 (defun nmcli-wifi-refresh ()
   (interactive)
   (let ((rows (nmcli-wifi--shell-command)))
