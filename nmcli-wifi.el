@@ -38,6 +38,7 @@
   (switch-to-buffer "*nmcli-wifi*")
   (nmcli-wifi-mode))
 
+;; TODO: Give option to use passwords stored in /etc/NetworkManager/system-connections
 (defun nmcli-wifi-connect ()
   (interactive)
   (let ((ssid (aref (tabulated-list-get-entry) 1))
